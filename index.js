@@ -1,8 +1,10 @@
 require('colors')
 const Fs = require('fs')
 const Path = require('path')
+global.modulePath = Path.resolve('./') + '/node_modules/clinodelucas/'
+console.log(global.modulePath)
+const routesjs = global.modulePath + './files/route.js'
 
-const routesjs = require('./files/route.js')
 
 //utils
 console.error = (m) => console.log(m.red)
@@ -48,7 +50,10 @@ function createRoute() {
   if (args[2] && args[2] !== 'index') {
     Fs.exists('./routes/' + args[2] + '.js', (exists) => {
       if (!exists) {
-        Fs.writeFile('./routes/' + args[2] + '.js', {}, (err) => console.log(err))
+        Fs.copyFile(routesjs, './routes/' + args[2] + '.js', (err) => {
+          if (err) throw err;
+          console.log('source.txt was copied to destination.txt');
+        })
       }
     })
   }
